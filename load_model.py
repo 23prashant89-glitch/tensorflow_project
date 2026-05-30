@@ -12,8 +12,8 @@ print("LOADING SAVED MODELS AND WEIGHTS")
 print("=" * 60)
 
 # METHOD 1: Load entire model
-print("\n1️⃣  Loading Complete Model (mnist_model.h5)...")
-loaded_model = keras.models.load_model('mnist_model.h5')
+print("\n1️⃣  Loading Complete Model (best_model.keras)...")
+loaded_model = keras.models.load_model('best_model.keras')
 print("✓ Model loaded successfully!")
 print(f"   Model summary:")
 loaded_model.summary()

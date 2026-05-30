@@ -2,6 +2,7 @@ import tensorflow as tf
 import keras
 import numpy as np
 import matplotlib.pyplot as plt
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 print(f'train: {x_train.shape}, test: {x_test.shape}')
@@ -29,12 +30,18 @@ model.compile(
     metrics=['accuracy']
 )
 
+callbacks = [
+    EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True ),
+    ModelCheckpoint('best_model.keras', save_best_only=True, monitor='val_accuracy')
+]
+
 history = model.fit(
     x_train, y_train, 
-    epochs=5,
+    epochs=50,
     batch_size=32,
     validation_data=(x_val, y_val),
-    verbose=1
+    verbose=1,
+    callbacks=callbacks
 )
 test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
 print(f'Test accuracy: {test_acc:.4f}')
@@ -59,10 +66,7 @@ plt.title('Loss'); plt.legend()
 plt.tight_layout
 plt.show()
 
-# Save both model and weights
-print("\n--- Saving Model and Weights ---")
-model.save('mnist_model.h5')  # Save entire model
-print("✓ Model saved as: mnist_model.h5")
+
 
 model.save_weights('mnist.weights.h5')  # Save only weights
 print("✓ Weights saved as: mnist.weights.h5")
